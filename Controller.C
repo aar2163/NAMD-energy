@@ -322,6 +322,8 @@ void Controller::integrate(int scriptTask) {
   
     int step = simParams->firstTimestep;
 
+    simParams->nsteps++;
+
     const int numberOfSteps = simParams->N;
     const int stepsPerCycle = simParams->stepsPerCycle;
 
@@ -334,6 +336,7 @@ void Controller::integrate(int scriptTask) {
     else
       slowFreq = simParams->nonbondedFrequency;
     if ( step >= numberOfSteps ) slowFreq = nbondFreq = 1;
+
 
   if ( scriptTask == SCRIPT_RUN ) {
 
@@ -2868,6 +2871,9 @@ void Controller::writeTiEnergyData(int step, ofstream_namd &file) {
 void Controller::outputExtendedSystem(int step)
 {
 
+
+
+
   if ( step >= 0 ) {
 
     // Write out eXtended System Trajectory (XST) file
@@ -2943,6 +2949,23 @@ void Controller::outputExtendedSystem(int step)
   //  Output final coordinates
   if (step == FILE_OUTPUT || step == END_OF_RUN)
   {
+   FILE *ene;
+   ene = fopen(simParams->enematrixFilename,"w");
+
+   int a1,a2;
+   for(a1=0;a1<MAXGROUP;a1++)
+   {
+    for(a2=0;a2<MAXGROUP;a2++)
+    {
+     if(simParams->enematrix[a1][a2] != 0)
+     {
+      fprintf(ene,"%d %d %f\n",a1,a2,simParams->enematrix[a1][a2]/simParams->nsteps);
+     }
+    }
+   }
+
+   fclose(ene);
+
     int realstep = ( step == FILE_OUTPUT ?
         simParams->firstTimestep : simParams->N );
     iout << "WRITING EXTENDED SYSTEM TO OUTPUT FILE AT STEP "

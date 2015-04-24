@@ -29,7 +29,7 @@ void register_mic_compute_pair(ComputeID c, PatchID pid[], int t[], int part, in
 void unregister_mic_compute(ComputeID c);
 #endif
 
-typedef unsigned short plint;
+typedef unsigned int plint;
 
 class Pairlists {
   enum {initsize = 10};

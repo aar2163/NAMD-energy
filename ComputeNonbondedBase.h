@@ -12,6 +12,7 @@
 #include <builtins.h>
 #endif
 
+
 #if defined(__SSE2__) && ! defined(NAMD_DISABLE_SSE)
 #include <emmintrin.h>  // We're using SSE2 intrinsics
 #if defined(__INTEL_COMPILER)
@@ -230,9 +231,39 @@ void ComputeNonbondedUtil :: NAME
   NOENERGY(return;)
 #endif
 
+
   // speedup variables
   BigReal *reduction = params->reduction;
+
+//#define MAXGROUP 2000
+//#define MAXATOM 200000
+
   SimParameters *simParams = Node::Object()->simParameters;
+
+  //static float enematrix[MAXGROUP][MAXGROUP];
+  //static int index[MAXATOM];
+
+  if(!simParams->done_index)
+  {
+   simParams->done_index = TRUE;
+   FILE *ind;
+   int ii;
+   ind = fopen(simParams->indexFilename,"r");
+   //index = fopen("/var/www/html/uploads/5524434687ca6/5524434687ca6-netindex.dat","r");
+
+   for(ii=0; ii < MAXATOM; ii++)
+   {
+    simParams->index[ii] = -1;
+   }
+
+   int a1,a2;
+   while (fscanf(ind, "%d %d", &a1, &a2) != EOF) {
+    simParams->index[a1] = a2;
+   }
+
+   fclose(ind);
+   //fprintf(stderr, "index %d %d %d\n", index[0], index[100], simParams->N);
+  }
 
   PPROF(
   BigReal *pressureProfileReduction = params->pressureProfileReduction;
@@ -653,6 +684,7 @@ void ComputeNonbondedUtil :: NAME
       register int index = 0;
 
       for (register int i = nbgs; i < i_upper; i += nbgs) {
+       //fprintf(stderr,"lala %d %d\n",nbgs,i);
 
         // Set p_i_next to point to the atom for the next iteration and begin
         //   loading the 'nbgs' value for that atom.
@@ -674,6 +706,7 @@ void ComputeNonbondedUtil :: NAME
         // Update index for the next iteration
         index = i;
       }
+       //fprintf(stderr,"lalafim\n");
 
       register BigReal sortVal = COMPONENT_DOTPRODUCT(p,projLineVec);
 
@@ -808,6 +841,7 @@ void ComputeNonbondedUtil :: NAME
   )
    PAIR(for ( ; i < (i_upper);)) SELF(for ( i=0; i < (i_upper- 1);i++))
     {
+     //fprintf(stderr,"lalala2 %d %d\n",i,i_upper);
     const CompAtom &p_i = p_0[i];
     const CompAtomExt &pExt_i = pExt_0[i];
 
@@ -2102,6 +2136,7 @@ PAIR(
   // PAIR(iout << "++++++++\n" << endi;)
   PAIR( if ( savePairlists ) { pairlists.setIndexValue(i); } )
 
+  fprintf(stderr, "enematrix %f %d\n", simParams->enematrix[0][1],simParams->nsteps);
 #ifdef A2_QPX
     BigReal  virial_xx   =  vec_extract (virial_v0, 0);
     BigReal  virial_xy   =  vec_extract (virial_v0, 1);

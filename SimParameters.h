@@ -97,6 +97,9 @@ typedef int GoChoices;
 #define CKLOOP_CTRL_PME_BACKWARDFFT 2
 #define CKLOOP_CTRL_PME_SENDUNTRANS 1
 
+#define MAXGROUP 2000
+#define MAXATOM 200000
+
 class SimParameters
 {
 private:
@@ -104,6 +107,11 @@ public:
 
 //  MAKE SURE THAT THIS CLASS CAN BE BIT COPIED OR YOU WILL HAVE TO
 //  ADD SPECIAL CODE TO send_SimParameters() and receive_SimParameters()
+
+  float enematrix[MAXGROUP][MAXGROUP];
+  int index[MAXATOM];
+  Bool done_index;
+  int nsteps;
 
   Bool lonepairs;  // enable lone pairs
   int watmodel; // integer code for the water model in use
@@ -208,6 +216,9 @@ public:
 					//  .vel appended to
 					//  it for the velocities
 	char restartFilename[128];	//  Base name of the restart file
+
+        char indexFilename[128];        //  index file
+        char enematrixFilename[128];    //  enematrix file
 	int restartFrequency;		//  How often (in timesteps) shoud the
 					//  restart files be updated
         Bool restartSave;		//  unique filenames for restart files

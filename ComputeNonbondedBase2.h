@@ -322,8 +322,10 @@ MODIFIED(
       ENERGY(
       register BigReal fast_val =
 	( ( diffa * fast_d * (1/6.)+ fast_c * (1/4.)) * diffa + fast_b *(1/2.)) * diffa + fast_a;
+       //fprintf(stderr,"to akic %f %d %d\n",fast_val,i,j);
       NOT_ALCHPAIR (
         electEnergy -=  LAM(lambda_pair *) fast_val;
+      
         FEP(electEnergy_s -= fast_val;)
       )
       ) //ENERGY
@@ -354,6 +356,7 @@ MODIFIED(
       reduction[pairElectForceIndex_X] +=  force_sign * fast_dir * p_ij_x;
       reduction[pairElectForceIndex_Y] +=  force_sign * fast_dir * p_ij_y;
       reduction[pairElectForceIndex_Z] +=  force_sign * fast_dir * p_ij_z;
+       //fprintf(stderr,"to akib %f %d %d\n",fast_dir,i,j);
       )
       }
 
@@ -630,9 +633,17 @@ MODIFIED(
       ENERGY(
       register BigReal slow_val =
         ( ( diffa * slow_d *(1/6.)+ slow_c * (1/4.)) * diffa + slow_b *(1/2.)) * diffa + slow_a;
+       //fprintf(stderr,"to aki %f %d %d\n",slow_val,i,j);
       
       NOT_ALCHPAIR (
         fullElectEnergy -= LAM(lambda_pair *) slow_val;
+        if(i < MAXATOM && j < MAXATOM && simParams->index[i] != -1 && simParams->index[j] != -1)
+        {
+         simParams->enematrix[simParams->index[i]][simParams->index[j]] -= LAM(lambda_pair *) slow_val;
+         //fprintf(stderr,"to akid %f %d %d\n",enematrix[0][0],i,j);
+        }
+
+
         FEP(fullElectEnergy_s -= slow_val;) 
       )
       ) // ENERGY
@@ -663,6 +674,7 @@ MODIFIED(
       reduction[pairElectForceIndex_X] += force_sign * slow_dir * p_ij_x;
       reduction[pairElectForceIndex_Y] += force_sign * slow_dir * p_ij_y;
       reduction[pairElectForceIndex_Z] += force_sign * slow_dir * p_ij_z;
+       //fprintf(stderr,"to akib %f %d %d\n",slow_dir,i,j);
       } )
 
 
