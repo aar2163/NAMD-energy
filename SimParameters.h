@@ -219,6 +219,7 @@ public:
 
         char indexFilename[128];        //  index file
         char enematrixFilename[128];    //  enematrix file
+        Bool energy_run;
 	int restartFrequency;		//  How often (in timesteps) shoud the
 					//  restart files be updated
         Bool restartSave;		//  unique filenames for restart files

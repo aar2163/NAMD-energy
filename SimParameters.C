@@ -213,6 +213,7 @@ void SimParameters::scriptSet(const char *param, const char *value) {
   SCRIPT_PARSE_STRING("restartname",restartFilename)
   SCRIPT_PARSE_STRING("indexname",indexFilename)
   SCRIPT_PARSE_STRING("enematrixname",enematrixFilename)
+  SCRIPT_PARSE_BOOL("energy_run",energy_run)
   SCRIPT_PARSE_INT("DCDfreq",dcdFrequency)
   if ( ! strncasecmp(param,"DCDfile",MAX_SCRIPT_PARAM_SIZE) ) { 
     close_dcdfile();  // *** implemented in Output.C ***
@@ -654,6 +655,10 @@ void SimParameters::config_parser_fileio(ParseOptions &opts) {
    opts.optional("main", "enematrixname",
     "prefix for the final PDB position and velocity filenames", 
     enematrixFilename);
+
+   opts.optional("main", "energy_run", 
+      "Energy run",
+      &energy_run, FALSE);
 
    opts.optional("main", "auxFile", "Filename for data stream output",
      auxFilename);

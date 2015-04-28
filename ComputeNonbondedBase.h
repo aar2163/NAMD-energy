@@ -243,7 +243,7 @@ void ComputeNonbondedUtil :: NAME
   //static float enematrix[MAXGROUP][MAXGROUP];
   //static int index[MAXATOM];
 
-  if(!simParams->done_index)
+  if(simParams->energy_run && !simParams->done_index)
   {
    simParams->done_index = TRUE;
    FILE *ind;
@@ -2136,7 +2136,7 @@ PAIR(
   // PAIR(iout << "++++++++\n" << endi;)
   PAIR( if ( savePairlists ) { pairlists.setIndexValue(i); } )
 
-  fprintf(stderr, "enematrix %f %d\n", simParams->enematrix[0][1],simParams->nsteps);
+  //fprintf(stderr, "enematrix %f %d\n", simParams->enematrix[0][1],simParams->nsteps);
 #ifdef A2_QPX
     BigReal  virial_xx   =  vec_extract (virial_v0, 0);
     BigReal  virial_xy   =  vec_extract (virial_v0, 1);

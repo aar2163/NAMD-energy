@@ -637,7 +637,7 @@ MODIFIED(
       
       NOT_ALCHPAIR (
         fullElectEnergy -= LAM(lambda_pair *) slow_val;
-        if(i < MAXATOM && j < MAXATOM && simParams->index[i] != -1 && simParams->index[j] != -1)
+        if(simParams->energy_run && i < MAXATOM && j < MAXATOM && simParams->index[i] != -1 && simParams->index[j] != -1)
         {
          simParams->enematrix[simParams->index[i]][simParams->index[j]] -= LAM(lambda_pair *) slow_val;
          //fprintf(stderr,"to akid %f %d %d\n",enematrix[0][0],i,j);
