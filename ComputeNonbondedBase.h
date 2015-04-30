@@ -2136,7 +2136,7 @@ PAIR(
   // PAIR(iout << "++++++++\n" << endi;)
   PAIR( if ( savePairlists ) { pairlists.setIndexValue(i); } )
 
-  //fprintf(stderr, "enematrix %f %d\n", simParams->enematrix[0][1],simParams->nsteps);
+  fprintf(stderr, "enematrix %f %d\n", simParams->enematrix[0][1],simParams->nsteps);
 #ifdef A2_QPX
     BigReal  virial_xx   =  vec_extract (virial_v0, 0);
     BigReal  virial_xy   =  vec_extract (virial_v0, 1);

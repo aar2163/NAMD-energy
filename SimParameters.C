@@ -3526,6 +3526,7 @@ void SimParameters::check_config(ParseOptions &opts, ConfigList *config, char *&
 	if ( ! *gridSize ) {   // set it
 	   *gridSize = bestSize;
         }
+        fprintf(stderr,"pme %f %f %f\n",gridSize,PMEGridSpacing,cellLength);
 	if ( *gridSize * PMEGridSpacing < cellLength ) {
 	   char errmsg[512];
 	   sprintf(errmsg, "PMEGridSize%s %d is too small for cell length %f and PMEGridSpacing %f\n",
